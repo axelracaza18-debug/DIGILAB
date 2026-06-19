@@ -8,6 +8,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Patient> patients = new ArrayList<>();
 
+        int nextId = 1; // 👈 NEW: ID generator
+
         boolean running = true;
 
         while (running) {
@@ -21,24 +23,26 @@ public class Main {
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            scanner.nextLine();
 
             switch (choice) {
 
                 case 1:
 
-                    Patient patient = new Patient();
-
                     System.out.print("Enter patient name: ");
-                    patient.name = scanner.nextLine();
+                    String name = scanner.nextLine();
 
                     System.out.print("Enter patient age: ");
-                    patient.age = scanner.nextInt();
+                    int age = scanner.nextInt();
                     scanner.nextLine();
 
+
+                    Patient patient = new Patient(nextId, name, age);
                     patients.add(patient);
 
-                    System.out.println("Patient added successfully!");
+                    System.out.println("Patient added successfully! ID: " + nextId);
+
+                    nextId++; // 👈 increase ID for next patient
                     break;
 
                 case 2:
@@ -51,8 +55,9 @@ public class Main {
 
                         for (Patient p : patients) {
                             System.out.println("--------------------");
-                            System.out.println("Name: " + p.name);
-                            System.out.println("Age : " + p.age);
+                            System.out.println("ID   : " + p.id);
+                            System.out.println("Name : " + p.name);
+                            System.out.println("Age  : " + p.age);
                         }
 
                         System.out.println("--------------------");
