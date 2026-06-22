@@ -34,13 +34,13 @@ public class Main {
 
         try {
 
-            BufferedReader reader = new BufferedReader(
-                    new FileReader("patients.txt")
-            );
+            BufferedReader reader = new BufferedReader(new FileReader("patients.txt"));
 
             String line;
 
             while ((line = reader.readLine()) != null) {
+
+                if (line.trim().isEmpty()) continue;
 
                 String[] data = line.split(",");
 
@@ -48,9 +48,7 @@ public class Main {
                 String name = data[1];
                 int age = Integer.parseInt(data[2]);
 
-                patients.add(
-                        new Patient(id, name, age)
-                );
+                patients.add(new Patient(id, name, age));
             }
 
             reader.close();
@@ -62,13 +60,28 @@ public class Main {
             System.out.println("No saved patients found.");
         }
     }
+    public static int getNextId(ArrayList<Patient> patients) {
+
+        int highestId = 0;
+
+        for (Patient p : patients) {
+
+            if (p.id > highestId) {
+                highestId = p.id;
+            }
+        }
+
+        return highestId + 1;
+    }
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         ArrayList<Patient> patients = new ArrayList<>();
-        loadPatients(patients);
-        int nextId = 1; // 👈 NEW: ID generator
 
+        loadPatients(patients);
+
+        int nextId = getNextId(patients);
         boolean running = true;
 
         while (running) {
@@ -103,7 +116,7 @@ public class Main {
 
                     System.out.println("Patient added successfully! ID: " + nextId);
 
-                    nextId++; // 👈 increase ID for next patient
+                    nextId = getNextId(patients);// 👈 increase ID for next patient
                     break;
 
                 case 2:
