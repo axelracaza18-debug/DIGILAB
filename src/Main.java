@@ -1,87 +1,15 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
 
 public class Main {
-    public static void savePatients(ArrayList<Patient> patients) {
-
-        try {
-
-            FileWriter writer = new FileWriter("patients.txt");
-
-            for (Patient p : patients) {
-
-                writer.write(
-                        p.id + "," +
-                                p.name + "," +
-                                p.age + "\n"
-                );
-            }
-
-            writer.close();
-
-            System.out.println("Patients saved successfully!");
-
-        } catch (IOException e) {
-
-            System.out.println("Error saving patients.");
-        }
-    }
-    public static void loadPatients(ArrayList<Patient> patients) {
-
-        try {
-
-            BufferedReader reader = new BufferedReader(new FileReader("patients.txt"));
-
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-
-                if (line.trim().isEmpty()) continue;
-
-                String[] data = line.split(",");
-
-                int id = Integer.parseInt(data[0]);
-                String name = data[1];
-                int age = Integer.parseInt(data[2]);
-
-                patients.add(new Patient(id, name, age));
-            }
-
-            reader.close();
-
-            System.out.println("Patients loaded successfully!");
-
-        } catch (IOException e) {
-
-            System.out.println("No saved patients found.");
-        }
-    }
-    public static int getNextId(ArrayList<Patient> patients) {
-
-        int highestId = 0;
-
-        for (Patient p : patients) {
-
-            if (p.id > highestId) {
-                highestId = p.id;
-            }
-        }
-
-        return highestId + 1;
-    }
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         ArrayList<Patient> patients = new ArrayList<>();
 
-        loadPatients(patients);
+        PatientManager.loadPatients(patients);
 
-        int nextId = getNextId(patients);
         boolean running = true;
 
         while (running) {
@@ -94,15 +22,15 @@ public class Main {
             System.out.println("3. Search Patient");
             System.out.println("4. Update Patient");
             System.out.println("5. Exit");
-            System.out.println("Choose an option:  ");
+            System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
 
             switch (choice) {
 
+                // ADD
                 case 1:
-
                     System.out.print("Enter patient name: ");
                     String name = scanner.nextLine();
 
@@ -110,97 +38,44 @@ public class Main {
                     int age = scanner.nextInt();
                     scanner.nextLine();
 
+                    int id = PatientManager.getNextId(patients);
 
-                    Patient patient = new Patient(nextId, name, age);
-                    patients.add(patient);
+                    patients.add(new Patient(id, name, age));
+                    PatientManager.savePatients(patients);
 
-                    System.out.println("Patient added successfully! ID: " + nextId);
-
-                    nextId = getNextId(patients);// 👈 increase ID for next patient
+                    System.out.println("Patient added successfully! ID: " + id);
                     break;
 
+                // VIEW
                 case 2:
-
                     System.out.println("\n=== PATIENT LIST ===");
 
                     if (patients.isEmpty()) {
                         System.out.println("No patients found.");
                     } else {
-
                         for (Patient p : patients) {
                             System.out.println("--------------------");
                             System.out.println("ID   : " + p.id);
                             System.out.println("Name : " + p.name);
                             System.out.println("Age  : " + p.age);
                         }
-
-                        System.out.println("--------------------");
-                        System.out.println("Total Patients: " + patients.size());
-
-                        System.out.println("\n1. Delete Patient");
-                        System.out.println("2. Return to Main Menu");
-                        System.out.print("Choose an option: ");
-
-                        int subChoice = scanner.nextInt();
-                        scanner.nextLine();
-
-                        switch (subChoice) {
-
-                            case 1:
-
-                                System.out.print("Enter Patient ID to delete: ");
-                                int deleteId = scanner.nextInt();
-                                scanner.nextLine();
-
-                                boolean found = false;
-
-                                for (int i = 0; i < patients.size(); i++) {
-
-                                    if (patients.get(i).id == deleteId) {
-
-                                        patients.remove(i);
-
-                                        System.out.println("Patient deleted successfully!");
-                                        found = true;
-                                        break;
-                                    }
-                                }
-
-                                if (!found) {
-                                    System.out.println("Patient ID not found.");
-                                }
-
-                                break;
-
-                            case 2:
-
-                                System.out.println("Returning to Main Menu...");
-                                break;
-
-                            default:
-
-                                System.out.println("Invalid option.");
-                        }
                     }
-
                     break;
-                case 3:
 
-                    System.out.print("Enter Patient ID to search: ");
+                // SEARCH
+                case 3:
+                    System.out.print("Enter Patient ID: ");
                     int searchId = scanner.nextInt();
                     scanner.nextLine();
 
                     boolean found = false;
 
                     for (Patient p : patients) {
-
                         if (p.id == searchId) {
-
-                            System.out.println("\n=== PATIENT FOUND ===");
+                            System.out.println("\n=== FOUND ===");
                             System.out.println("ID   : " + p.id);
                             System.out.println("Name : " + p.name);
                             System.out.println("Age  : " + p.age);
-
                             found = true;
                             break;
                         }
@@ -209,37 +84,32 @@ public class Main {
                     if (!found) {
                         System.out.println("Patient not found.");
                     }
-
                     break;
 
+                // UPDATE
                 case 4:
-
-                    System.out.print("Enter Patient ID to update: ");
+                    System.out.print("Enter Patient ID: ");
                     int updateId = scanner.nextInt();
                     scanner.nextLine();
 
                     boolean updated = false;
 
                     for (Patient p : patients) {
-
                         if (p.id == updateId) {
 
-                            System.out.println("\nCurrent Information:");
-                            System.out.println("Name: " + p.name);
-                            System.out.println("Age : " + p.age);
+                            System.out.println("Current Name: " + p.name);
+                            System.out.println("Current Age : " + p.age);
 
-                            System.out.print("Enter new name: ");
-                            String newName = scanner.nextLine();
+                            System.out.print("New Name: ");
+                            p.name = scanner.nextLine();
 
-                            System.out.print("Enter new age: ");
-                            int newAge = scanner.nextInt();
+                            System.out.print("New Age: ");
+                            p.age = scanner.nextInt();
                             scanner.nextLine();
 
-                            p.name = newName;
-                            p.age = newAge;
+                            PatientManager.savePatients(patients);
 
-                            System.out.println("Patient updated successfully!");
-
+                            System.out.println("Updated successfully!");
                             updated = true;
                             break;
                         }
@@ -248,19 +118,16 @@ public class Main {
                     if (!updated) {
                         System.out.println("Patient not found.");
                     }
-
                     break;
 
+                // EXIT
                 case 5:
-
-                    savePatients(patients);
-
+                    PatientManager.savePatients(patients);
                     running = false;
-
                     System.out.println("Closing DIGILAB...");
                     break;
-                default:
 
+                default:
                     System.out.println("Invalid option.");
             }
         }
