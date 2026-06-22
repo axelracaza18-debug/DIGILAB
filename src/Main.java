@@ -1,13 +1,72 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class Main {
+    public static void savePatients(ArrayList<Patient> patients) {
 
+        try {
+
+            FileWriter writer = new FileWriter("patients.txt");
+
+            for (Patient p : patients) {
+
+                writer.write(
+                        p.id + "," +
+                                p.name + "," +
+                                p.age + "\n"
+                );
+            }
+
+            writer.close();
+
+            System.out.println("Patients saved successfully!");
+
+        } catch (IOException e) {
+
+            System.out.println("Error saving patients.");
+        }
+    }
+    public static void loadPatients(ArrayList<Patient> patients) {
+
+        try {
+
+            BufferedReader reader = new BufferedReader(
+                    new FileReader("patients.txt")
+            );
+
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+
+                String[] data = line.split(",");
+
+                int id = Integer.parseInt(data[0]);
+                String name = data[1];
+                int age = Integer.parseInt(data[2]);
+
+                patients.add(
+                        new Patient(id, name, age)
+                );
+            }
+
+            reader.close();
+
+            System.out.println("Patients loaded successfully!");
+
+        } catch (IOException e) {
+
+            System.out.println("No saved patients found.");
+        }
+    }
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         ArrayList<Patient> patients = new ArrayList<>();
-
+        loadPatients(patients);
         int nextId = 1; // 👈 NEW: ID generator
 
         boolean running = true;
@@ -178,8 +237,13 @@ public class Main {
                     }
 
                     break;
+
                 case 5:
+
+                    savePatients(patients);
+
                     running = false;
+
                     System.out.println("Closing DIGILAB...");
                     break;
                 default:
