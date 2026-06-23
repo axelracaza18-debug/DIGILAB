@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Main {
 
@@ -21,7 +23,9 @@ public class Main {
             System.out.println("2. View Patients");
             System.out.println("3. Search Patient");
             System.out.println("4. Update Patient");
-            System.out.println("5. Exit");
+            System.out.println("5. Delete Patient");
+            System.out.println("6. Sort Patients");
+            System.out.println("7. Exit");
             System.out.print("Choose an option: ");
 
             int choice = scanner.nextInt();
@@ -31,12 +35,30 @@ public class Main {
 
                 // ADD
                 case 1:
-                    System.out.print("Enter patient name: ");
-                    String name = scanner.nextLine();
+                    String name;
 
-                    System.out.print("Enter patient age: ");
-                    int age = scanner.nextInt();
-                    scanner.nextLine();
+                    do {
+                        System.out.print("Enter patient name: ");
+                        name = scanner.nextLine();
+
+                        if (name.trim().isEmpty()) {
+                            System.out.println("Name cannot be empty.");
+                        }
+
+                    } while (name.trim().isEmpty());
+
+                    int age;
+
+                    do {
+                        System.out.print("Enter patient age: ");
+                        age = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (age <= 0) {
+                            System.out.println("Age must be greater than 0.");
+                        }
+
+                    } while (age <= 0);
 
                     int id = PatientManager.getNextId(patients);
 
@@ -64,26 +86,29 @@ public class Main {
 
                 // SEARCH
                 case 3:
-                    System.out.print("Enter Patient ID: ");
-                    int searchId = scanner.nextInt();
-                    scanner.nextLine();
+
+                    System.out.print("Enter Patient Name: ");
+                    String searchName = scanner.nextLine();
 
                     boolean found = false;
 
                     for (Patient p : patients) {
-                        if (p.id == searchId) {
-                            System.out.println("\n=== FOUND ===");
+
+                        if (p.name.toLowerCase().contains(searchName.toLowerCase())) {
+
+                            System.out.println("\n=== PATIENT FOUND ===");
                             System.out.println("ID   : " + p.id);
                             System.out.println("Name : " + p.name);
                             System.out.println("Age  : " + p.age);
+
                             found = true;
-                            break;
                         }
                     }
 
                     if (!found) {
                         System.out.println("Patient not found.");
                     }
+
                     break;
 
                 // UPDATE
@@ -120,14 +145,79 @@ public class Main {
                     }
                     break;
 
-                // EXIT
                 case 5:
-                    PatientManager.savePatients(patients);
-                    running = false;
-                    System.out.println("Closing DIGILAB...");
+
+                    System.out.print("Enter Patient ID to delete: ");
+                    int deleteId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    boolean deleted = false;
+
+                    for (int i = 0; i < patients.size(); i++) {
+
+                        if (patients.get(i).id == deleteId) {
+
+                            patients.remove(i);
+
+                            PatientManager.savePatients(patients);
+
+                            System.out.println("Patient deleted successfully!");
+
+                            deleted = true;
+                            break;
+                        }
+                    }
+
+                    if (!deleted) {
+                        System.out.println("Patient ID not found.");
+                    }
+
                     break;
 
+                case 6:
+
+                    System.out.println("\n=== SORT PATIENTS ===");
+                    System.out.println("1. Sort by ID");
+                    System.out.println("2. Sort by Name");
+                    System.out.print("Choose option: ");
+
+                    int sortChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    switch (sortChoice) {
+
+                        case 1:
+
+                            Collections.sort(patients,Comparator.comparingInt(p -> p.id));
+
+                            System.out.println("Patients sorted by ID.");
+                            break;
+
+                        case 2:
+
+                            Collections.sort(patients,Comparator.comparing(p -> p.name));
+
+                            System.out.println("Patients sorted by Name.");
+                            break;
+
+                        default:
+
+                            System.out.println("Invalid option.");
+                    }
+
+                    break;
+
+
+                case 7:
+
+                    PatientManager.savePatients(patients);
+
+                    running = false;
+
+                    System.out.println("Closing DIGILAB...");
+                    break;
                 default:
+
                     System.out.println("Invalid option.");
             }
         }
