@@ -16,17 +16,14 @@ public class Main {
 
         while (running) {
 
-            System.out.println("\n================================");
-            System.out.println("      DIGILAB HOSPITAL SYSTEM");
-            System.out.println("================================");
             System.out.println("1. Add Patient");
             System.out.println("2. View Patients");
             System.out.println("3. Search Patient");
             System.out.println("4. Update Patient");
             System.out.println("5. Delete Patient");
-            System.out.println("6. Sort Patients");
-            System.out.println("7. Exit");
-            System.out.print("Choose an option: ");
+            System.out.println("6. Patient Statistics");
+            System.out.println("7. Sort Patients");
+            System.out.println("8. Exit");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -176,6 +173,46 @@ public class Main {
 
                 case 6:
 
+                    if (patients.isEmpty()) {
+
+                        System.out.println("No patients found.");
+
+                    } else {
+
+                        System.out.println("\n=== PATIENT STATISTICS ===");
+                        System.out.println("Total Patients: " + patients.size());
+                        int totalAge = 0;
+                        Patient oldestPatient = patients.get(0);
+                        Patient youngestPatient = patients.get(0);
+                        for (Patient p : patients) {
+
+                            totalAge += p.age;
+
+                            if (p.age > oldestPatient.age) {
+
+                                oldestPatient = p;
+
+                            }
+                            if (p.age < youngestPatient.age) {
+
+                                youngestPatient = p;
+
+                            }
+                        }
+                        double averageAge = (double) totalAge / patients.size();
+
+                        System.out.println("Average Age: " + averageAge);
+                        System.out.println("Oldest Patient: " + oldestPatient.name + " (" + oldestPatient.age + ")");
+                        System.out.println("Youngest Patient: " + youngestPatient.name + " (" + youngestPatient.age + ")");
+                    }
+
+                    break;
+
+
+
+
+                case 7:
+
                     System.out.println("\n=== SORT PATIENTS ===");
                     System.out.println("1. Sort by ID");
                     System.out.println("2. Sort by Name");
@@ -188,14 +225,16 @@ public class Main {
 
                         case 1:
 
-                            Collections.sort(patients,Comparator.comparingInt(p -> p.id));
+                            Collections.sort(patients,
+                                    Comparator.comparingInt(p -> p.id));
 
                             System.out.println("Patients sorted by ID.");
                             break;
 
                         case 2:
 
-                            Collections.sort(patients,Comparator.comparing(p -> p.name));
+                            Collections.sort(patients,
+                                    Comparator.comparing(p -> p.name));
 
                             System.out.println("Patients sorted by Name.");
                             break;
@@ -207,8 +246,7 @@ public class Main {
 
                     break;
 
-
-                case 7:
+                case 8:
 
                     PatientManager.savePatients(patients);
 
@@ -216,12 +254,15 @@ public class Main {
 
                     System.out.println("Closing DIGILAB...");
                     break;
+
                 default:
 
                     System.out.println("Invalid option.");
+
+
+
             }
         }
-
-        scanner.close();
+                       scanner.close();
     }
 }
