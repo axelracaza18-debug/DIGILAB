@@ -24,4 +24,8 @@ public class FilterManager {
         }
     }
 
+    public static void showPatientsYoungerThan(ArrayList<Patient> patients, int age) {
+
+    }
+
 }
