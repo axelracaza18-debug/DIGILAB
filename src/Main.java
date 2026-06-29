@@ -23,7 +23,8 @@ public class Main {
             System.out.println("5. Delete Patient");
             System.out.println("6. Patient Statistics");
             System.out.println("7. Sort Patients");
-            System.out.println("8. Exit");
+            System.out.println("8. Filter Patients");
+            System.out.println("9. Exit");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -214,8 +215,17 @@ public class Main {
                     }
 
                     break;
-
                 case 8:
+
+                    System.out.print("Show patients older than age: ");
+                    int filterAge = scanner.nextInt();
+                    scanner.nextLine();
+
+                    FilterManager.showPatientsOlderThan(patients, filterAge);
+
+                    break;
+
+                    case 9:
 
                     PatientManager.savePatients(patients);
 
