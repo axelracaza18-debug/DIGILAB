@@ -26,6 +26,45 @@ public class FilterManager {
 
     public static void showPatientsYoungerThan(ArrayList<Patient> patients, int age) {
 
+        boolean found = false;
+
+        for (Patient p : patients) {
+
+            if (p.age < age) {
+
+                System.out.println("--------------------");
+                System.out.println("ID   : " + p.id);
+                System.out.println("Name : " + p.name);
+                System.out.println("Age  : " + p.age);
+
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No patients found.");
+        }
+    }
+    public static void showPatientsBetween(ArrayList<Patient> patients, int minAge, int maxAge) {
+        boolean found = false;
+
+        for (Patient p : patients) {
+
+            if (p.age >= minAge && p.age <= maxAge) {
+
+                System.out.println("--------------------");
+                System.out.println("ID   : " + p.id);
+                System.out.println("Name : " + p.name);
+                System.out.println("Age  : " + p.age);
+
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No patients found.");
+        }
+
     }
 
 }

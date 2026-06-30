@@ -217,11 +217,58 @@ public class Main {
                     break;
                 case 8:
 
-                    System.out.print("Show patients older than age: ");
-                    int filterAge = scanner.nextInt();
+                    System.out.println("\n=== FILTER MENU ===");
+                    System.out.println("1. Older than");
+                    System.out.println("2. Younger than");
+                    System.out.println("3. Between ages");
+                    System.out.println("4. Return");
+
+                    int filterChoice = scanner.nextInt();
                     scanner.nextLine();
 
-                    FilterManager.showPatientsOlderThan(patients, filterAge);
+                    switch (filterChoice) {
+
+                        case 1:
+
+                            System.out.print("Show patients older than age: ");
+                            int filterAge = scanner.nextInt();
+                            scanner.nextLine();
+
+                            FilterManager.showPatientsOlderThan(patients, filterAge);
+                            break;
+
+                        case 2:
+
+                            System.out.print("Show patients younger than age: ");
+                            int youngerAge = scanner.nextInt();
+                            scanner.nextLine();
+
+                            FilterManager.showPatientsYoungerThan(patients, youngerAge);
+                            break;
+
+                        case 3:
+
+                            System.out.print("Enter minimum age: ");
+                            int minAge = scanner.nextInt();
+                            scanner.nextLine();
+
+                            System.out.print("Enter maximum age: ");
+                            int maxAge = scanner.nextInt();
+                            scanner.nextLine();
+
+                            FilterManager.showPatientsBetween(patients, minAge, maxAge);
+
+                            break;
+
+                            case 4:
+                            break;
+
+                        default:
+
+                            System.out.println("Invalid option.");
+
+                            System.out.println("Invalid option.");
+                    }
 
                     break;
 
