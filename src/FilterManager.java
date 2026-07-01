@@ -8,12 +8,9 @@ public class FilterManager {
 
         for (Patient p : patients) {
 
-            if (p.age > age) {
+            if (p.getAge() > age) {
 
-                System.out.println("--------------------");
-                System.out.println("ID   : " + p.id);
-                System.out.println("Name : " + p.name);
-                System.out.println("Age  : " + p.age);
+                printPatient(p);
 
                 found = true;
             }
@@ -30,12 +27,9 @@ public class FilterManager {
 
         for (Patient p : patients) {
 
-            if (p.age < age) {
+            if (p.getAge() < age) {
 
-                System.out.println("--------------------");
-                System.out.println("ID   : " + p.id);
-                System.out.println("Name : " + p.name);
-                System.out.println("Age  : " + p.age);
+                printPatient(p);
 
                 found = true;
             }
@@ -50,12 +44,9 @@ public class FilterManager {
 
         for (Patient p : patients) {
 
-            if (p.age >= minAge && p.age <= maxAge) {
+            if (p.getAge() >= minAge && p.getAge() <= maxAge) {
 
-                System.out.println("--------------------");
-                System.out.println("ID   : " + p.id);
-                System.out.println("Name : " + p.name);
-                System.out.println("Age  : " + p.age);
+                printPatient(p);
 
                 found = true;
             }
@@ -66,5 +57,10 @@ public class FilterManager {
         }
 
     }
+    private static void printPatient(Patient p) {
 
+
+        System.out.println(p);
+
+    }
 }

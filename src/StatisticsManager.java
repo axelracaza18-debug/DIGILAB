@@ -20,13 +20,13 @@ public class StatisticsManager {
 
             for (Patient p : patients) {
 
-                totalAge += p.age;
+                totalAge += p.getAge();
 
-                if (p.age > oldestPatient.age) {
+                if (p.getAge() > oldestPatient.getAge()) {
                     oldestPatient = p;
                 }
 
-                if (p.age < youngestPatient.age) {
+                if (p.getAge() < youngestPatient.getAge()) {
                     youngestPatient = p;
                 }
             }
@@ -34,8 +34,8 @@ public class StatisticsManager {
             double averageAge = (double) totalAge / patients.size();
 
             System.out.println("Average Age: " + averageAge);
-            System.out.println("Oldest Patient: " + oldestPatient.name + " (" + oldestPatient.age + ")");
-            System.out.println("Youngest Patient: " + youngestPatient.name + " (" + youngestPatient.age + ")");
+            System.out.println("Oldest Patient: " +oldestPatient.getName()+ " (" + oldestPatient.getName() + ")");
+            System.out.println("Youngest Patient: " + youngestPatient.getName()  + " (" + youngestPatient.getName()  + ")");
         }
     }
 

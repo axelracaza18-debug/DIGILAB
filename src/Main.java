@@ -74,10 +74,7 @@ public class Main {
                         System.out.println("No patients found.");
                     } else {
                         for (Patient p : patients) {
-                            System.out.println("--------------------");
-                            System.out.println("ID   : " + p.id);
-                            System.out.println("Name : " + p.name);
-                            System.out.println("Age  : " + p.age);
+                            System.out.println(p);
                         }
                     }
                     break;
@@ -92,12 +89,10 @@ public class Main {
 
                     for (Patient p : patients) {
 
-                        if (p.name.toLowerCase().contains(searchName.toLowerCase())) {
+                        if (p.getName().toLowerCase().contains(searchName.toLowerCase())) {
 
                             System.out.println("\n=== PATIENT FOUND ===");
-                            System.out.println("ID   : " + p.id);
-                            System.out.println("Name : " + p.name);
-                            System.out.println("Age  : " + p.age);
+                            System.out.println(p);
 
                             found = true;
                         }
@@ -118,16 +113,16 @@ public class Main {
                     boolean updated = false;
 
                     for (Patient p : patients) {
-                        if (p.id == updateId) {
+                        if (p.getId() == updateId) {
 
-                            System.out.println("Current Name: " + p.name);
-                            System.out.println("Current Age : " + p.age);
+                            System.out.println("Current Name: " + p.getName());
+                            System.out.println("Current Age : " + p.getAge());
 
                             System.out.print("New Name: ");
-                            p.name = scanner.nextLine();
+                            p.setName(scanner.nextLine());
 
                             System.out.print("New Age: ");
-                            p.age = scanner.nextInt();
+                            p.setAge(scanner.nextInt());
                             scanner.nextLine();
 
                             PatientManager.savePatients(patients);
@@ -153,7 +148,7 @@ public class Main {
 
                     for (int i = 0; i < patients.size(); i++) {
 
-                        if (patients.get(i).id == deleteId) {
+                        if (patients.get(i).getId() == deleteId) {
 
                             patients.remove(i);
 
@@ -196,7 +191,7 @@ public class Main {
                         case 1:
 
                             Collections.sort(patients,
-                                    Comparator.comparingInt(p -> p.id));
+                                    Comparator.comparingInt(p -> p.getId()));
 
                             System.out.println("Patients sorted by ID.");
                             break;
@@ -204,7 +199,7 @@ public class Main {
                         case 2:
 
                             Collections.sort(patients,
-                                    Comparator.comparing(p -> p.name));
+                                    Comparator.comparing(p -> p.getName()));
 
                             System.out.println("Patients sorted by Name.");
                             break;

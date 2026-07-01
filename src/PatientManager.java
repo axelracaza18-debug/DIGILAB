@@ -11,7 +11,7 @@ public class PatientManager {
 
             for (Patient p : patients) {
 
-                writer.write(p.id + "," + p.name + "," + p.age + "\n");
+                writer.write(p.getId() + "," + p.getName() + "," + p.getAge() + "\n");
             }
 
             writer.close();
@@ -52,8 +52,8 @@ public class PatientManager {
         int highestId = 0;
 
         for (Patient p : patients) {
-            if (p.id > highestId) {
-                highestId = p.id;
+            if (p.getId() > highestId) {
+                highestId = p.getId();
             }
         }
 
